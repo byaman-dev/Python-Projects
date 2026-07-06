@@ -1,0 +1,16 @@
+========================================
+         PYTHON CALCULATOR
+========================================
+
+1. Addition
+2. Subtraction
+3. Multiplication
+4. Division
+5. Exit
+
+Select an option (1-5): 1
+
+Enter first number : 25
+Enter second number: 17
+
+Result : 25 + 17 = 42
