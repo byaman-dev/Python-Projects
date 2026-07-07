@@ -1,0 +1,21 @@
+=============================================
+        PYTHON PASSWORD GENERATOR
+=============================================
+
+Password Length: 16
+
+Include Uppercase Letters? (Y/N): Y
+Include Lowercase Letters? (Y/N): Y
+Include Numbers? (Y/N): Y
+Include Special Characters? (Y/N): Y
+
+---------------------------------------------
+Generated Password
+---------------------------------------------
+Q7@vLm!2#xWp9RsA
+---------------------------------------------
+
+Generate another password? (Y/N): N
+
+Thank you for using Password Generator.
+Goodbye!
