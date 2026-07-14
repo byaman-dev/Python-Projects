@@ -1,0 +1,34 @@
+=============================================
+         NUMBER GUESSING GAME
+=============================================
+
+Choose Difficulty
+
+1. Easy (1 - 10)
+2. Medium (1 - 50)
+3. Hard (1 - 100)
+4. Exit
+
+Select an option (1-4): 2
+
+Game Started!
+
+Enter your guess (1-50): 20
+
+⬆ Too Low!
+
+Enter your guess (1-50): 35
+
+⬇ Too High!
+
+Enter your guess (1-50): 28
+
+🎉 Congratulations!
+
+You guessed the correct number: 28
+Attempts: 3
+
+Would you like to play again? (Y/N): N
+
+Thank you for playing!
+Goodbye!
