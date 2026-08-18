@@ -1,0 +1,29 @@
+# Documents
+.pdf=Documents
+.doc=Documents
+.docx=Documents
+.txt=Documents
+
+# Images
+.jpg=Images
+.jpeg=Images
+.png=Images
+.gif=Images
+
+# Videos
+.mp4=Videos
+.mkv=Videos
+.mov=Videos
+
+# Audio
+.mp3=Audio
+.wav=Audio
+
+# Archives
+.zip=Archives
+.rar=Archives
+.7z=Archives
+
+# Installers
+.exe=Installers
+.msi=Installers
