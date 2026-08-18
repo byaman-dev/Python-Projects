@@ -1,0 +1,28 @@
+SMART FILE ORGANIZER
+========================================
+
+Enter the folder you want to organize:
+> C:\Users\User\Downloads
+
+Organizing: C:\Users\User\Downloads
+
+Processing files...
+
+  ✓ report.pdf → Documents
+  ✓ vacation.jpg → Images
+  ✓ project.zip → Archives
+  ✓ presentation.pptx → Documents
+  ✓ tutorial.mp4 → Videos
+  ✓ music.mp3 → Audio
+  - Skipped: unknown.xyz (no matching rule)
+
+========================================
+       ORGANIZATION COMPLETE
+========================================
+
+Files processed : 7
+Files organized : 6
+Files skipped   : 1
+Errors          : 0
+
+Thank you for using Smart File Organizer!
