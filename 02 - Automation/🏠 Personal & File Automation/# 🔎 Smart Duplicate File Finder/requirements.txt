@@ -1,0 +1,6 @@
+# Smart Duplicate File Finder
+# Python 3.11 or newer required
+#
+# No external Python packages are required.
+# The project uses only Python standard library modules:
+# pathlib, datetime, hashlib, json, and os.
