@@ -1,0 +1,446 @@
+==================================================
+🔎 SMART DUPLICATE FILE FINDER
+==============================
+
+📖 Rules loaded.
+🔐 Hash algorithm: sha256
+📦 Hash chunk size: 1048576 bytes
+🧠 Recommendation strategy: newest
+
+Enter folder to scan: C:\Users\Aman\Documents\Test-Duplicates
+
+🔍 Scanning folder...
+📂 C:\Users\Aman\Documents\Test-Duplicates
+
+📏 Checking file sizes...
+
+🔐 Comparing file contents...
+
+📊 Analyzing duplicate groups...
+
+==================================================
+DUPLICATE SUMMARY
+=================
+
+Files scanned: 30,000
+Possible duplicate groups: 1,842
+Exact duplicate groups: 417
+Duplicate files: 1,126
+Potential space to recover: 8.73 GB
+Folder scanned: C:\Users\Aman\Documents\Test-Duplicates
+
+🎯 Exact duplicates have been identified.
+
+🧠 Generating recommendations...
+✅ Recommendations generated for 417 groups.
+
+==================================================
+OPTIONS
+=======
+
+[1] Inspect duplicate groups
+[2] View recommendations
+[3] Clean up a duplicate group
+[4] Generate report
+[Q] Finish
+
+Choice: 1
+
+==================================================
+DUPLICATE GROUPS
+================
+
+Showing groups 1-10 of 417
+
+---
+
+## 🎯 Duplicate Group #1
+
+Copies: 3
+File size: 24.60 MB
+Potential space: 49.20 MB
+
+Locations:
+
+1. C:\Users\Aman\Documents\Projects\report.pdf
+   Modified: 18 Aug 2026, 14:32
+
+2. C:\Users\Aman\Downloads\report_copy.pdf
+   Modified: 15 Aug 2026, 09:17
+
+3. D:\Backup\report.pdf
+   Modified: 10 Aug 2026, 21:04
+
+---
+
+## 🎯 Duplicate Group #2
+
+Copies: 2
+File size: 4.82 MB
+Potential space: 4.82 MB
+
+Locations:
+
+1. C:\Users\Aman\Pictures\photo.jpg
+   Modified: 17 Aug 2026, 18:42
+
+2. C:\Users\Aman\Pictures\Backup\photo_backup.jpg
+   Modified: 12 Aug 2026, 11:06
+
+---
+
+## 🎯 Duplicate Group #3
+
+Copies: 4
+File size: 150.00 MB
+Potential space: 450.00 MB
+
+Locations:
+
+1. C:\Users\Aman\Downloads\project.zip
+   Modified: 19 Aug 2026, 16:22
+
+2. C:\Users\Aman\Desktop\project.zip
+   Modified: 18 Aug 2026, 10:51
+
+3. D:\Backup\project.zip
+   Modified: 14 Aug 2026, 13:40
+
+4. D:\Old-Backup\project.zip
+   Modified: 01 Aug 2026, 08:12
+
+---
+
+Options:
+[N] Next page
+[B] Back to main menu
+
+Choice: n
+
+==================================================
+DUPLICATE GROUPS
+================
+
+Showing groups 11-20 of 417
+
+... additional duplicate groups omitted from this sample ...
+
+---
+
+Options:
+[N] Next page
+[P] Previous page
+[B] Back to main menu
+
+Choice: b
+
+Returning to main menu.
+
+==================================================
+OPTIONS
+=======
+
+[1] Inspect duplicate groups
+[2] View recommendations
+[3] Clean up a duplicate group
+[4] Generate report
+[Q] Finish
+
+Choice: 2
+
+==================================================
+DUPLICATE RECOMMENDATIONS
+=========================
+
+Showing groups 1-10 of 417
+
+---
+
+## 🎯 Duplicate Group #1
+
+Recommendation strategy: newest
+
+✅ Recommended to keep:
+C:\Users\Aman\Documents\Projects\report.pdf
+Modified: 18 Aug 2026, 14:32
+
+🗑 Candidates for removal:
+
+C:\Users\Aman\Downloads\report_copy.pdf
+Modified: 15 Aug 2026, 09:17
+
+D:\Backup\report.pdf
+Modified: 10 Aug 2026, 21:04
+
+💾 Potential space: 49.20 MB
+
+---
+
+## 🎯 Duplicate Group #2
+
+Recommendation strategy: newest
+
+✅ Recommended to keep:
+C:\Users\Aman\Pictures\photo.jpg
+Modified: 17 Aug 2026, 18:42
+
+🗑 Candidates for removal:
+
+C:\Users\Aman\Pictures\Backup\photo_backup.jpg
+Modified: 12 Aug 2026, 11:06
+
+💾 Potential space: 4.82 MB
+
+---
+
+Options:
+[N] Next page
+[B] Back to main menu
+
+Choice: b
+
+Returning to main menu.
+
+==================================================
+OPTIONS
+=======
+
+[1] Inspect duplicate groups
+[2] View recommendations
+[3] Clean up a duplicate group
+[4] Generate report
+[Q] Finish
+
+Choice: 3
+
+==================================================
+SELECT DUPLICATE GROUP
+======================
+
+Available groups: 417
+
+Enter a group number or Q to cancel.
+
+Group number: 1
+
+==================================================
+SAFE CLEANUP
+============
+
+✅ File protected from cleanup:
+C:\Users\Aman\Documents\Projects\report.pdf
+
+🗑 Duplicate files available for cleanup:
+
+[1] C:\Users\Aman\Downloads\report_copy.pdf
+Modified: 15 Aug 2026, 09:17
+
+[2] D:\Backup\report.pdf
+Modified: 10 Aug 2026, 21:04
+
+Enter the numbers of the files you want to clean up.
+Example: 1
+For multiple files, use: 1,2,3
+
+Selection (or Q to cancel): 1
+
+---
+
+```
+         CLEANUP MODE
+```
+
+---
+
+[1] ♻️ Move to Recycle Bin
+[2] 🗑️ Permanently Delete
+[Q] Cancel
+
+Choice: 1
+
+---
+
+## ⚠ FINAL CONFIRMATION
+
+The selected files will be moved to the Recycle Bin.
+
+The protected file will NOT be affected:
+
+✅ C:\Users\Aman\Documents\Projects\report.pdf
+
+Selected files:
+
+* C:\Users\Aman\Downloads\report_copy.pdf
+
+Type DELETE to confirm: DELETE
+
+♻️ Moved to Recycle Bin: C:\Users\Aman\Downloads\report_copy.pdf
+
+---
+
+Cleanup complete.
+Files processed successfully: 1
+
+==================================================
+OPTIONS
+=======
+
+[1] Inspect duplicate groups
+[2] View recommendations
+[3] Clean up a duplicate group
+[4] Generate report
+[Q] Finish
+
+Choice: 4
+
+📄 Report saved to:
+C:\Users\Aman\Documents\Python-Projects\02-Duplicate-File-Finder\duplicate-report.txt
+
+==================================================
+OPTIONS
+=======
+
+[1] Inspect duplicate groups
+[2] View recommendations
+[3] Clean up a duplicate group
+[4] Generate report
+[Q] Finish
+
+Choice: q
+
+==================================================
+COMPLETE
+========
+
+---
+
+## EXAMPLE: INVALID INPUT
+
+Choice: 9
+
+⚠ Invalid choice.
+
+---
+
+## EXAMPLE: INVALID CLEANUP SELECTION
+
+Selection (or Q to cancel): 1,9
+
+⚠ One or more selected numbers are invalid.
+
+---
+
+## EXAMPLE: CLEANUP CANCELLED
+
+Type DELETE to confirm: NO
+
+❌ Cleanup cancelled.
+
+---
+
+## EXAMPLE: PERMANENT DELETE CONFIRMATION
+
+Choice: 2
+
+---
+
+## ⚠ FINAL CONFIRMATION
+
+⚠ PERMANENT DELETE SELECTED.
+The selected files will be permanently deleted.
+
+Type DELETE PERMANENTLY to continue: DELETE PERMANENTLY
+
+🗑️ Permanently deleted: C:\Users\Aman\Downloads\old-copy.pdf
+
+---
+
+Cleanup complete.
+Files processed successfully: 1
+
+---
+
+## EXAMPLE: NO DUPLICATES FOUND
+
+🔍 Scanning folder...
+📂 C:\Users\Aman\Documents\Unique-Files
+
+📏 Checking file sizes...
+
+🔐 Comparing file contents...
+
+📊 Analyzing duplicate groups...
+
+==================================================
+DUPLICATE SUMMARY
+=================
+
+Files scanned: 245
+Possible duplicate groups: 18
+Exact duplicate groups: 0
+Duplicate files: 0
+Potential space to recover: 0.00 B
+Folder scanned: C:\Users\Aman\Documents\Unique-Files
+
+🎯 No exact duplicates were found.
+
+Would you like to generate a report anyway?
+Enter Y to generate a report, or N to finish: y
+
+📄 Report saved to:
+C:\Users\Aman\Documents\Python-Projects\02-Duplicate-File-Finder\duplicate-report.txt
+
+==================================================
+COMPLETE
+========
+
+---
+
+## EXAMPLE: RULES.JSON CONFIGURATION
+
+The following settings are connected to the current program:
+
+hashing.algorithm
+Controls the hash algorithm used for duplicate detection.
+Current value: sha256
+
+hashing.chunk_size
+Controls the number of bytes read per hashing chunk.
+Current value: 1048576
+
+recommendations.keep
+Controls the recommendation strategy.
+Current value: newest
+
+display.groups_per_page
+Controls how many groups are displayed per page.
+Current value: 10
+
+cleanup.require_confirmation
+Controls whether cleanup requires confirmation.
+Current value: true
+
+reporting.enabled
+Controls whether reports can be generated.
+Current value: true
+
+reporting.filename
+Controls the report filename.
+Current value: duplicate-report.txt
+
+The following rules are present in rules.json but are not yet
+fully connected to program behavior in the current MVP:
+
+recommendations.prefer_working_folder
+recommendations.avoid_backup_locations
+scanning.include_hidden_files
+scanning.follow_symlinks
+scanning.ignore_folders
+cleanup.use_recycle_bin
+cleanup.allow_permanent_delete
+
+These settings are reserved for future advanced upgrades.
+
+---
+
+## END OF SAMPLE OUTPUT
