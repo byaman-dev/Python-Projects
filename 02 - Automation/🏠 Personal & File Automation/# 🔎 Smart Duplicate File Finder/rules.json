@@ -1,0 +1,33 @@
+{
+    "hashing": {
+        "algorithm": "sha256",
+        "chunk_size": 1048576
+    },
+
+    "recommendations": {
+        "keep": "newest",
+        "prefer_working_folder": true,
+        "avoid_backup_locations": true
+    },
+
+    "scanning": {
+        "include_hidden_files": true,
+        "follow_symlinks": false,
+        "ignore_folders": []
+    },
+
+    "display": {
+        "groups_per_page": 10
+    },
+
+    "cleanup": {
+        "require_confirmation": true,
+        "use_recycle_bin": true,
+        "allow_permanent_delete": true
+    },
+
+    "reporting": {
+        "enabled": true,
+        "filename": "duplicate-report.txt"
+    }
+}
