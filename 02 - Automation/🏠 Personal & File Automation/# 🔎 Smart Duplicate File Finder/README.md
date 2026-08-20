@@ -171,7 +171,6 @@ Recommendation:
 Keep #1
 
 Reason:
-- Located in the selected working directory
 - Most recently modified
 
 ⚠ Recommendation only — review before deleting.
@@ -207,13 +206,16 @@ The rules can control things such as:
 
 * Which hash method to use
 * How duplicate recommendations should work
-* Whether some files should be ignored
-* Whether hidden files should be included
-* Other simple scanning preferences
+* How many duplicate groups are shown per page
+* Whether cleanup requires explicit confirmation
+* Whether cleanup can use the Windows Recycle Bin
+* Whether report generation is enabled and what filename is used
 
 We will keep this rulebook small and easy to understand.
 
 The goal is to make the program easier to change, not to create a complicated settings system.
+
+For example, changing the hash chunk size or the number of groups displayed per page can be done directly in `rules.json` without changing the Python code.
 
 ---
 
@@ -268,6 +270,166 @@ The program calculates the hash in small **chunks** instead of loading a huge fi
 In simple terms: read a little → update the fingerprint → read a little more → repeat until the file is finished.
 
 This makes it easier to work with large files without using a huge amount of memory.
+
+---
+
+## 🧯 What Went Wrong While Building It?
+
+This project was not built in one clean pass. Several parts had to be tested, broken, debugged, and corrected before the final workflow worked reliably.
+
+That is an important part of the project too. The final program shows the result, but the development process included failures at different stages.
+
+### 1. 📂 File Scanning — The First Layer Had to Be Verified
+
+The first stage is deceptively simple: find every file inside the selected folder.
+
+The problem is that the rest of the program is only as reliable as this list. If recursive scanning misses a subfolder or includes something it should not, every later calculation becomes wrong.
+
+So this stage was tested separately with files in the main folder and inside subfolders.
+
+**Failure risk:** an incomplete or incorrect file list would produce incorrect duplicate results.
+
+**Fix:** isolate recursive scanning as its own function and test the returned paths before moving on to duplicate detection.
+
+### 2. 📏 File-Size Grouping — Same Size Does Not Mean Duplicate
+
+The size filter is an optimisation, not proof of duplication.
+
+Two completely different files can have exactly the same size. Treating them as duplicates would be a serious logic error.
+
+**Failure:** files with the same size were able to reach the duplicate-checking stage even though their contents could be different.
+
+**Fix:** use file size only as the first filter, then require a matching content hash before declaring an exact duplicate.
+
+This distinction is also covered by the automated tests for same-size, different-content files.
+
+### 3. 🔐 Hashing — The Fingerprint Had to Be Tested Independently
+
+Hashing is the point where the program actually examines file contents, so a mistake here could make the entire detector unreliable.
+
+The SHA-256 implementation was therefore tested against known content and against invalid hash-algorithm input. Empty files were also included in testing because they are a valid edge case and still need a deterministic hash.
+
+**Failure risk:** an incorrect algorithm, incorrect file reading, or incorrect chunk handling could produce the wrong fingerprint and therefore the wrong duplicate decision.
+
+**Fix:** test hashing independently before relying on it in the full duplicate-detection pipeline.
+
+### 4. 🧩 Duplicate Grouping — The Pipeline Needed More Than One Check
+
+The detector had to prove two things:
+
+```text
+Same Size
+    ↓
+Same Hash
+    ↓
+Exact Duplicate
+```
+
+and also correctly reject:
+
+```text
+Same Size
+    ↓
+Different Hash
+    ↓
+Not a Duplicate
+```
+
+The empty-file case and groups containing three identical files were also tested because simple two-file examples do not cover every grouping situation.
+
+### 5. 🧠 Recommendations — A Correct Recommendation Must Not Change Files
+
+The recommendation system is intentionally separate from cleanup.
+
+One important safety requirement was that generating a recommendation must not modify the files it is analysing.
+
+**Failure risk:** mixing recommendation logic with file operations could accidentally turn a suggestion into an unwanted modification.
+
+**Fix:** recommendations only analyse metadata and return a suggested file to keep plus removal candidates. Actual cleanup happens later and requires a separate user action.
+
+The recommendation strategies are also tested independently, including `newest`, `oldest`, and `shortest_path`.
+
+### 6. 📋 Rules Connection — Configuration Must Not Be Trusted Blindly
+
+`rules.json` is deliberately kept outside the Python code, but that creates another failure point: the configuration file can be missing, malformed, or contain unexpected values.
+
+**Failure:** invalid JSON can prevent the program from receiving usable configuration.
+
+**Fix:** the rules loader was tested with both valid JSON and invalid JSON. The program can fall back safely instead of treating a broken configuration file as a successful configuration.
+
+This is why the rulebook is not just documentation — it is an actual tested part of the program.
+
+### 7. 🗑️ Cleanup — The Most Dangerous Stage Needed the Strongest Tests
+
+Cleanup is where a logic mistake can cause real data loss, so it was tested separately from detection.
+
+The cleanup tests specifically cover:
+
+* Selecting multiple files
+* Protecting the recommended file
+* Invalid selections
+* Wrong confirmation text
+* Permanent deletion
+* Successful deletion of only the selected files
+
+The interactive workflow was also manually tested using the Windows Recycle Bin. A duplicate was selected, confirmation was required, the duplicate was moved to the Recycle Bin, and a follow-up scan confirmed that it was no longer detected.
+
+The important lesson here was simple:
+
+> **Finding a duplicate is not permission to delete it.**
+
+### 8. 📄 Reporting — The Report Had to Reflect the Whole Run
+
+Report generation is another stage where it is easy for the program to appear successful while producing incomplete information.
+
+The report was therefore tested for the presence of the major sections:
+
+* Scan information
+* Duplicate groups
+* Recommendations
+* Cleanup results
+
+This makes the report part of the tested workflow rather than an unverified extra feature.
+
+### 9. 🧪 The Development Process Itself Had Failures
+
+Not every failure was inside the final application logic.
+
+During development, an early code-edit attempt failed because the expected source-file context did not match the actual file. The change could not safely be applied without first checking the current code.
+
+That was a useful reminder for the project itself:
+
+> **Don't assume the code is in the state you think it is. Check it before changing it.**
+
+The final implementation was then tested as individual functions and as a complete pipeline instead of relying only on visual inspection.
+
+### What This Changed About the Project
+
+The final version is therefore not simply:
+
+```text
+Write code → It works
+```
+
+It is closer to:
+
+```text
+Build a stage
+     ↓
+Test it
+     ↓
+Find a failure or edge case
+     ↓
+Understand what went wrong
+     ↓
+Fix the logic
+     ↓
+Test again
+     ↓
+Connect it to the next stage
+```
+
+That debugging process is one of the main things this project was built to teach.
 
 ---
 
@@ -386,7 +548,7 @@ This is the main Python file. It handles things like:
 
 ### `rules.json`
 
-Contains the small set of rules used by the program.
+Contains the configurable rules used by the program, including hashing, recommendation strategy, display pagination, cleanup behavior, and reporting settings.
 
 Keeping these rules outside the main code makes the project easier to understand and change.
 
@@ -486,6 +648,43 @@ duplicate-report.txt
 
 The summary gives you the quick version of what happened without making you count everything yourself.
 
+The program can also generate a detailed `duplicate-report.txt` report containing the scan information, duplicate groups, recommendations, and cleanup results.
+
+---
+
+## 🧪 Testing
+
+The project includes a test suite covering the main detection, analysis, recommendation, cleanup, configuration, and reporting logic.
+
+The current test suite passes:
+
+```text
+24 passed
+```
+
+The tests cover areas such as:
+
+* Recursive folder scanning
+* File-size grouping
+* SHA-256 hashing
+* Exact duplicate detection
+* Same-size but different-content files
+* Empty-file duplicates
+* Duplicate-group analysis and storage calculations
+* Recommendation strategies
+* Recommendation safety
+* File-size formatting
+* Group selection and validation
+* Confirmed permanent cleanup
+* Invalid cleanup selections
+* Incorrect cleanup confirmation
+* Report generation
+* Valid and invalid `rules.json` files
+* No-duplicate scanning pipeline
+* Multiple identical files
+
+In addition to automated tests, the interactive workflow has been manually tested with real files, including duplicate detection, recommendation display, report generation, Recycle Bin cleanup, and a follow-up scan confirming that the cleaned duplicate was no longer detected.
+
 ---
 
 ## ⚠️ Current Limitations
@@ -513,7 +712,7 @@ Its recommendations are based on simple rules and information such as file locat
 
 ## 🛠️ Roadmap
 
-### Version 1.0
+### Version 1.0 — Completed ✅
 
 * Recursive folder scanning
 * File size comparison
@@ -528,6 +727,7 @@ Its recommendations are based on simple rules and information such as file locat
 * Duplicate recommendations
 * Interactive duplicate inspection
 * User-confirmed deletion
+* Recycle Bin cleanup on Windows
 * Duplicate report
 * Final scan summary
 * Safe handling of common file-system errors
@@ -537,7 +737,6 @@ Its recommendations are based on simple rules and information such as file locat
 * Better filtering options
 * Ignore selected folders
 * Improved cleanup workflow
-* Recycle Bin support
 * More detailed reports
 * Better handling of very large directories
 * Additional configuration options
