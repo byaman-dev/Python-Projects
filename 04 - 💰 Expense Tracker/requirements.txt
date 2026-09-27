@@ -1,2 +1,3 @@
 # This project uses only Python's standard library.
 # No external packages are required.
+# (SQLite storage uses the built-in sqlite3 module — still nothing to install.)
