@@ -1,198 +1,145 @@
 # 💰 Expense Tracker
 
-> A Python command-line application for recording, organizing, and managing daily expenses while strengthening core programming concepts such as functions, data structures, input validation, and file handling.
+> Where did my money go? This project exists so I never have to ask that question and shrug.
 
-![Python](https://img.shields.io/badge/Python-3.x-blue?style=for-the-badge\&logo=python)
+![Python](https://img.shields.io/badge/Python-3.x-blue?style=for-the-badge&logo=python)
+![Storage](https://img.shields.io/badge/Storage-SQLite-lightgrey?style=for-the-badge&logo=sqlite)
 ![Status](https://img.shields.io/badge/Status-Completed-success?style=for-the-badge)
-![Difficulty](https://img.shields.io/badge/Difficulty-Beginner--Intermediate-orange?style=for-the-badge)
 
 ---
 
-## 📖 Overview
+## 🤔 Why this exists
 
-Managing personal finances is an essential real-world skill, and software can make tracking expenses simple and efficient. This project provides a menu-driven command-line application that allows users to record daily expenses, view spending history, calculate total expenses, and manage financial records in an organized way.
+I kept spending money and having absolutely no idea where it went by the end of the week. So instead of downloading some app with 40 permissions I didn't understand, I built my own — a small command-line tool that just asks "what did you spend, on what, how much" and remembers it for me.
 
-Beyond its practical use, the project serves as an excellent introduction to building larger Python applications by combining multiple programming concepts into a single program.
-
----
-
-# 🎯 Objectives
-
-By building this project, I aimed to:
-
-* Apply Python fundamentals in a real-world application.
-* Design a menu-driven command-line interface.
-* Organize code using reusable functions.
-* Practice working with lists and dictionaries.
-* Validate user input to improve reliability.
-* Handle runtime errors gracefully.
-* Build clean, readable, and maintainable code.
+Small problem, small tool. That's the whole pitch.
 
 ---
 
-# ✨ Features
+## 🧪 The plot twist
 
-Current features include:
+The first version of this "kept" my expenses in a plain Python list. Which sounds fine until you realize a list living in memory disappears the moment the program closes. So technically, v1 was less "expense tracker" and more "expense forgetter" — it worked perfectly for exactly as long as you didn't close the terminal.
 
-* ➕ Add new expenses
-* 📋 View all recorded expenses
-* 💰 Calculate total spending
-* 🗑 Delete expenses
-* 📂 Organize expenses by category
-* ⚠ Input validation
-* 🖥 User-friendly command-line interface
+v2 fixes that by handing the job to SQLite, a real (tiny) database that lives on disk. Close the terminal, shut down the laptop, come back next week — your expenses are still there. Wild concept, I know.
 
 ---
 
-# 🧠 Concepts Learned
+## ✨ What it actually does
 
-This project reinforced my understanding of:
-
-* Functions
-* Variables
-* Lists
-* Dictionaries
-* Loops
-* Conditional Statements
-* Exception Handling
-* Input Validation
-* Menu-Driven Programs
-* Code Organization
+* ➕ Add an expense — category, description, amount, and it quietly timestamps it with today's date
+* 📋 View everything you've logged, neatly lined up in a table
+* 💰 Ask it for your running total, no mental math required
+* 🗑 Delete an expense by its ID — no more "wait, did deleting #3 just turn #4 into #3?" confusion
+* ⚠ It will not accept "banana" as a valid amount, and it will tell you so
 
 ---
 
-# 📁 Project Structure
+## 🧠 What building this taught me
+
+* How to actually **persist** data instead of pretending a Python list is a database
+* Writing real SQL — `CREATE TABLE`, `INSERT`, `SELECT`, `DELETE` — instead of just reading about it
+* Why IDs are safer than list positions the moment deletion is involved
+* That input validation is 80% of what makes a CLI tool feel trustworthy instead of fragile
+* Structuring a program so the "brain" (database logic) and the "face" (menu/printing) don't get tangled together
+
+---
+
+## 📁 What's in the folder
 
 ```text
-Expense Tracker
+04 - Expense Tracker
 │
-├── README.md
-├── expense_tracker.py
+├── Expense Tracker.py         → the actual program
+├── test_expense_tracker.py    → automated tests (10 of them, all green)
+├── README.md                  → you are here
 ├── requirements.txt
-├── sample-output.txt
-└── screenshots
+└── sample-output.txt
 ```
+
+No `expenses.db` is committed — it gets created automatically the first time you run the program, right next to the script.
 
 ---
 
-# ▶️ How to Run
-
-### 1. Clone the repository
+## ▶️ Running it
 
 ```bash
+# grab the project
 git clone <repository-url>
+cd "04 - Expense Tracker"
+
+# run it
+python "Expense Tracker.py"
 ```
 
-### 2. Navigate to the project directory
-
-```bash
-cd "Expense Tracker"
-```
-
-### 3. Run the application
-
-```bash
-python expense_tracker.py
-```
+First run creates `expenses.db` for you. Every run after that just uses it.
 
 ---
 
-# 💻 Example Output
+## 🧪 Running the tests
+
+Curious whether it actually works, or just want to poke it before trusting it with your data? Same instinct I had.
+
+```bash
+python -m unittest "test_expense_tracker.py" -v
+```
+
+The tests spin up a **temporary, throwaway database** for each check — your real `expenses.db` is never touched. They cover the boring-but-important stuff: adding an expense actually saves it, invalid amounts get rejected, deleting by ID removes the right row (and only the right row), and totals add up correctly.
+
+---
+
+## 💻 What it looks like
 
 ```text
-=============================
-      Expense Tracker
-=============================
-
+=============================================
+          EXPENSE TRACKER
+=============================================
 1. Add Expense
 2. View Expenses
 3. Show Total Expenses
 4. Delete Expense
 5. Exit
+=============================================
+Select an option (1-5): 1
 
-Choose an option: 1
-
-Category : Food
+Add New Expense
+------------------------------
+Category    : Food
 Description : Lunch
-Amount : 250
+Amount (₹)  : 250
 
-✅ Expense added successfully!
+✅ Expense added successfully.
 ```
 
 ---
 
-# 🛠 Skills Gained
+## 🚀 Where this could go next
 
-Completing this project strengthened my ability to:
-
-* Develop structured Python applications.
-* Design interactive command-line interfaces.
-* Build reusable functions.
-* Organize application logic effectively.
-* Improve code readability.
-* Handle user input safely.
-* Apply problem-solving skills to real-world scenarios.
+* Filter expenses by date or category (the data's already there, just needs a query)
+* Monthly or weekly spending summaries
+* Edit an existing expense instead of delete-and-redo
+* Export to CSV for spreadsheet people
+* Maybe, eventually, a GUI — but the terminal version has to earn that upgrade first
 
 ---
 
-# 🚀 Future Improvements
+## 🌱 The honest reflection
 
-Potential enhancements include:
+The interesting part of this project wasn't the menu or the print statements — it was realizing, halfway through, that "store data" and "don't lose data" are two completely different problems, and my first version only solved the first one. Fixing that meant learning just enough SQL to be dangerous, and rethinking how delete should work once records have a permanent identity instead of just a spot in a list.
 
-* 💾 Save expenses using CSV or JSON.
-* 📅 Filter expenses by date.
-* 📊 Monthly spending summaries.
-* 📈 Category-wise expense analysis.
-* ✏ Edit existing expenses.
-* 🔍 Search expenses.
-* 📉 Expense statistics and visualizations.
-* 🖥 Graphical User Interface (GUI).
+Small tool. Real lesson.
 
 ---
 
-# 🌱 Learning Reflection
+## 📌 Quick facts
 
-The Expense Tracker is my first project that combines multiple Python concepts into a practical application rather than solving a single programming problem. It strengthened my understanding of designing larger programs by breaking functionality into smaller, reusable components.
-
-Working on this project also reinforced the importance of writing clean, maintainable code and validating user input to create a more reliable user experience. The techniques learned here provide a strong foundation for future automation, cybersecurity, and data-processing projects.
-
----
-
-# 📌 Project Information
-
-| Property       | Details                 |
-| -------------- | ----------------------- |
-| **Project**    | Expense Tracker         |
-| **Language**   | Python                  |
-| **Difficulty** | Beginner – Intermediate |
-| **Category**   | Foundations             |
-| **Module**     | 01 – Foundations        |
-| **Status**     | ✅ Completed             |
+| Property       | Details                     |
+| -------------- | ---------------------------- |
+| **Project**    | Expense Tracker               |
+| **Language**   | Python                        |
+| **Storage**    | SQLite                        |
+| **Tests**      | ✅ 10/10 passing               |
+| **Status**     | ✅ Completed                   |
 
 ---
 
-# 📚 References
-
-* Python Documentation
-* PEP 8 – Python Style Guide
-* Python Standard Library Documentation
-
----
-
-# ➡️ Next Project
-
-**Unit Converter**
-
-The Unit Converter introduces reusable mathematical functions and reinforces clean program structure through various conversion utilities.
-
----
-
-# 📦 Next Module
-
-**02 – Automation**
-
-After completing the Foundations module, the next stage focuses on automating repetitive tasks using Python, including file management, backups, and data processing.
-
----
-
-> *"Good software doesn't just solve problems—it makes everyday tasks simpler, more reliable, and easier to manage."*
+> *"A list remembers things until you close it. A database remembers things until you delete it. That difference is the whole point of this project."*
