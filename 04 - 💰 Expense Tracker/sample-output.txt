@@ -7,18 +7,13 @@
 4. Delete Expense
 5. Exit
 =============================================
-Select an option (1-5): 1
-
+Select an option (1-5): 
 Add New Expense
 ------------------------------
-Category    : Food
-Description : Lunch
-Amount (₹) : 150
-
+Category    : Description : Amount (₹) : 
 ✅ Expense added successfully.
 
 Press Enter to continue...
-
 =============================================
           EXPENSE TRACKER
 =============================================
@@ -28,18 +23,13 @@ Press Enter to continue...
 4. Delete Expense
 5. Exit
 =============================================
-Select an option (1-5): 1
-
+Select an option (1-5): 
 Add New Expense
 ------------------------------
-Category    : Transport
-Description : Bus
-Amount (₹) : 50
-
+Category    : Description : Amount (₹) : 
 ✅ Expense added successfully.
 
 Press Enter to continue...
-
 =============================================
           EXPENSE TRACKER
 =============================================
@@ -49,16 +39,14 @@ Press Enter to continue...
 4. Delete Expense
 5. Exit
 =============================================
-Select an option (1-5): 2
-
-============================================================
-No.  Category      Description           Amount
-============================================================
-1   Food          Lunch                 ₹150.0
-2   Transport     Bus                   ₹50.0
+Select an option (1-5): 
+======================================================================
+ID    Date        Category      Description           Amount
+======================================================================
+1     2026-09-26  Food          Lunch                 ₹250.0
+2     2026-09-26  Travel        Bus ticket            ₹40.0
 
 Press Enter to continue...
-
 =============================================
           EXPENSE TRACKER
 =============================================
@@ -68,14 +56,12 @@ Press Enter to continue...
 4. Delete Expense
 5. Exit
 =============================================
-Select an option (1-5): 3
-
+Select an option (1-5): 
 ------------------------------
-Total Expenses : ₹200.0
+Total Expenses : ₹290.0
 ------------------------------
 
 Press Enter to continue...
-
 =============================================
           EXPENSE TRACKER
 =============================================
@@ -85,48 +71,6 @@ Press Enter to continue...
 4. Delete Expense
 5. Exit
 =============================================
-Select an option (1-5): 4
-
-============================================================
-No.  Category      Description           Amount
-============================================================
-1   Food          Lunch                 ₹150.0
-2   Transport     Bus                   ₹50.0
-
-Enter expense number to delete: 1
-
-✅ 'Lunch' deleted successfully.
-
-Press Enter to continue...
-
-=============================================
-          EXPENSE TRACKER
-=============================================
-1. Add Expense
-2. View Expenses
-3. Show Total Expenses
-4. Delete Expense
-5. Exit
-=============================================
-Select an option (1-5): 2
-
-============================================================
-No.  Category      Description           Amount
-============================================================
-1   Transport     Bus                   ₹50.0
-
-Press Enter to continue...
-
-=============================================
-          EXPENSE TRACKER
-=============================================
-1. Add Expense
-2. View Expenses
-3. Show Total Expenses
-4. Delete Expense
-5. Exit
-=============================================
-Select an option (1-5): 5
-
+Select an option (1-5): 
 Thank you for using Expense Tracker.
 Goodbye!
