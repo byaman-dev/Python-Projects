@@ -1,24 +1,68 @@
 """
-Project : Expense Tracker
-Module  : Foundations
-Author  : Aman Kumar
+Project : Expense Tracker (SQLite version)
+Module  : Foundations -> Automation (storage upgrade)
+Author  : Aman Kumar (upgraded for review)
 Repository : Python-Projects
 
 Description:
 A command-line expense tracker that allows users to record,
 view, calculate, and delete daily expenses.
 
-This project demonstrates Python fundamentals including
-functions, lists, dictionaries, loops, input validation,
-and exception handling.
+Changes from the original version:
+- Expenses are now stored in a local SQLite database
+  (expenses.db) instead of an in-memory Python list, so data
+  survives between runs.
+- Add / View / Delete / Total all operate against the database
+  using SQL instead of list operations.
+- Delete now works by a permanent expense ID rather than a
+  position in the currently displayed list, so numbers don't
+  shift around after a delete.
+- A "date" field was added, since a real expense tracker needs
+  one and SQLite makes it easy to store.
+
+Everything else — the menu, the prompts, the input validation,
+the look of the output — is kept exactly as it was, so this
+still reads like the same project, just with real storage.
 """
 
+import sqlite3
+from datetime import date
+
+
+DB_FILE = "expenses.db"
+
 
 # ----------------------------------------------------
-# Data Storage
+# Database Setup
 # ----------------------------------------------------
 
-expenses = []
+def get_connection():
+    """
+    Open a connection to the SQLite database.
+    """
+    return sqlite3.connect(DB_FILE)
+
+
+def init_db():
+    """
+    Create the expenses table if it doesn't already exist.
+    Runs once at program start; safe to call every time.
+    """
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS expenses (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            category    TEXT NOT NULL,
+            description TEXT,
+            amount      REAL NOT NULL,
+            date        TEXT NOT NULL
+        )
+    """)
+
+    conn.commit()
+    conn.close()
 
 
 # ----------------------------------------------------
@@ -67,7 +111,7 @@ def get_menu_choice():
 
 def add_expense():
     """
-    Add a new expense.
+    Add a new expense to the database.
     """
 
     print("\nAdd New Expense")
@@ -77,16 +121,38 @@ def add_expense():
     description = input("Description : ")
 
     amount = get_positive_number("Amount (₹) : ")
+    today = date.today().isoformat()
 
-    expense = {
-        "category": category,
-        "description": description,
-        "amount": amount
-    }
+    conn = get_connection()
+    cursor = conn.cursor()
 
-    expenses.append(expense)
+    cursor.execute(
+        "INSERT INTO expenses (category, description, amount, date) "
+        "VALUES (?, ?, ?, ?)",
+        (category, description, amount, today)
+    )
+
+    conn.commit()
+    conn.close()
 
     print("\n✅ Expense added successfully.")
+
+
+def fetch_all_expenses():
+    """
+    Return all expenses from the database, oldest first.
+    """
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT id, category, description, amount, date "
+        "FROM expenses ORDER BY id"
+    )
+    rows = cursor.fetchall()
+
+    conn.close()
+    return rows
 
 
 def view_expenses():
@@ -94,27 +160,28 @@ def view_expenses():
     Display all recorded expenses.
     """
 
-    if len(expenses) == 0:
+    rows = fetch_all_expenses()
+
+    if len(rows) == 0:
 
         print("\nNo expenses recorded.\n")
         return
 
-    print("\n" + "=" * 60)
-    print("No.  Category      Description           Amount")
-    print("=" * 60)
+    print("\n" + "=" * 70)
+    print("ID    Date        Category      Description           Amount")
+    print("=" * 70)
 
-    number = 1
+    for row in rows:
 
-    for expense in expenses:
+        expense_id, category, description, amount, expense_date = row
 
         print(
-            f"{number:<4}"
-            f"{expense['category']:<14}"
-            f"{expense['description']:<22}"
-            f"₹{expense['amount']}"
+            f"{expense_id:<6}"
+            f"{expense_date:<12}"
+            f"{category:<14}"
+            f"{(description or ''):<22}"
+            f"₹{amount}"
         )
-
-        number += 1
 
 
 def show_total():
@@ -122,16 +189,14 @@ def show_total():
     Display the total amount spent.
     """
 
-    if len(expenses) == 0:
+    rows = fetch_all_expenses()
+
+    if len(rows) == 0:
 
         print("\nNo expenses recorded.\n")
         return
 
-    total = 0
-
-    for expense in expenses:
-
-        total += expense["amount"]
+    total = sum(row[3] for row in rows)
 
     print("\n------------------------------")
     print(f"Total Expenses : ₹{total}")
@@ -140,10 +205,12 @@ def show_total():
 
 def delete_expense():
     """
-    Delete an expense.
+    Delete an expense by its ID.
     """
 
-    if len(expenses) == 0:
+    rows = fetch_all_expenses()
+
+    if len(rows) == 0:
 
         print("\nNo expenses recorded.\n")
         return
@@ -154,21 +221,33 @@ def delete_expense():
 
         try:
 
-            expense_number = int(
-                input("\nEnter expense number to delete: ")
+            expense_id = int(
+                input("\nEnter expense ID to delete: ")
             )
 
-            if 1 <= expense_number <= len(expenses):
+            conn = get_connection()
+            cursor = conn.cursor()
 
-                deleted = expenses.pop(expense_number - 1)
+            cursor.execute(
+                "SELECT description FROM expenses WHERE id = ?",
+                (expense_id,)
+            )
+            match = cursor.fetchone()
 
-                print(
-                    f"\n✅ '{deleted['description']}' deleted successfully."
-                )
+            if match is None:
+                print("❌ Invalid expense ID.")
+                conn.close()
+                continue
 
-                break
+            cursor.execute(
+                "DELETE FROM expenses WHERE id = ?",
+                (expense_id,)
+            )
+            conn.commit()
+            conn.close()
 
-            print("❌ Invalid expense number.")
+            print(f"\n✅ '{match[0]}' deleted successfully.")
+            break
 
         except ValueError:
 
@@ -200,6 +279,8 @@ def display_menu():
 # ----------------------------------------------------
 
 def main():
+
+    init_db()
 
     while True:
 
